@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bene Store | Interactive 3D Texture Roller</title>
+    
+    <!-- This script pulls in Google's free 3D viewer engine -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f9f9f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        
+        /* Main Layout Container */
+        .product-container {
+            display: flex;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 1000px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* Left Side: 3D Window */
+        .viewer-section {
+            flex: 1;
+            background: radial-gradient(#ffffff, #eaeaea);
+            position: relative;
+            min-height: 450px;
+        }
+
+        /* The 3D Element */
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            /* This animation makes the item smoothly float up and down */
+            animation: floatAnimation 4s ease-in-out infinite;
+        }
+
+        /* Right Side: Details */
+        .info-section {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 { color: #222; margin-bottom: 10px; font-size: 2rem; }
+        .price { font-size: 1.5rem; color: #0070f3; font-weight: bold; margin-bottom: 20px; }
+        .description { color: #666; line-height: 1.6; margin-bottom: 25px; }
+        
+        .spec-group { margin-bottom: 20px; }
+        .spec-label { font-weight: 600; color: #444; margin-bottom: 8px; display: block; }
+        
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        /* Floating effect animation */
+        @keyframes floatAnimation {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Responsive stack for mobile phones */
+        @media (max-width: 768px) {
+            .product-container { flex-direction: column; }
+            .viewer-section { min-height: 350px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="product-container">
+        
+        <!-- 3D FLOATING & MOVING VIEWERS -->
+        <div class="viewer-section">
+            <!-- 
+              auto-rotate: Makes it spin horizontally on its own.
+              camera-controls: Lets the customer click/touch to spin it 360 degrees.
+              interaction-prompt="none": Stops annoying hand-overlays from showing up.
+            -->
+            <model-viewer 
+                id="roller-display"
+                src="roller_sample.glb" 
+                alt="3D Texture Roller preview"
+                auto-rotate
+                camera-controls
+                interaction-prompt="none"
+                shadow-intensity="1.5"
+                environment-image="neutral"
+                exposure="1.2">
+            </model-viewer>
+        </div>
+
+        <!-- PRODUCT DETAILS PANEL -->
+        <div class="info-section">
+            <h1>Premium Texture Roller</h1>
+            <div class="price">$15.00</div>
+            <p class="description">
+                High-quality custom 3D printed texture roller designed for clay, dough, and crafting work. Grab the model on the left to inspect the design details from any direction.
+            </p>
+
+            <!-- Pattern Selection Dropdown -->
+            <div class="spec-group">
+                <label class="spec-label" for="pattern-select">Choose Pattern Style:</label>
+                <select id="pattern-select">
+                    <option value="roller_sample.glb">Pattern #1: Classic Diamond</option>
+                    <option value="roller_style2.glb">Pattern #2: Brick Wave</option>
+                    <option value="roller_style3.glb">Pattern #3: Hexagon Grid</option>
+                </select>
+            </div>
+
+            <!-- Size Selection Dropdown -->
+            <div class="spec-group">
+                <label class="spec-label" for="size-select">Select Size:</label>
+                <select id="size-select">
+                    <option>Small (50mm)</option>
+                    <option selected>Medium (100mm)</option>
+                    <option>Large (150mm)</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Quick script: When the user changes the pattern style dropdown, 
+        // it updates the 3D viewer instantly with the new model file.
+        const patternSelect = document.getElementById('pattern-select');
+        const modelViewer = document.getElementById('roller-display');
+
+        patternSelect.addEventListener('change', (event) => {
+            modelViewer.src = event.target.value;
+        });
+    </script>
+
+</body>
+</html>
